@@ -5,16 +5,15 @@ interface KeyValuePair {
     v: any
 }
 
-export default class ConfigDN {
+export class ConfigDN {
     #settings: Settings;
+    #lastUpdate : number;
     fetchedConfig: Map<String, Object> = new Map();
-
-    #refresh : number = -1;
     
     constructor(authKey: string, apiEndpoint: string = 'https://cdn.configdn.com/', refreshInterval: number = 60) {
         this.#settings = new Settings(authKey, apiEndpoint, refreshInterval);
         this.refreshConfig(true);
-        this.#setupRefresh();
+        this.#lastUpdate = Date.now() / 1000;
     }
 
     async refreshConfig(errorOnFail: boolean = false): Promise<void> {
@@ -42,13 +41,16 @@ export default class ConfigDN {
     }
 
     async get(key: string): Promise<any> {
-        if (this.fetchedConfig.size === 0) {
+        if (this.fetchedConfig.size === 0 || this.#lastUpdate + this.#settings.getRefreshInterval() > Date.now() / 1000) {
             await this.refreshConfig()
         }
         return this.getLocal(key);
     }
 
     getLocal(key : string) : any {
+        if (this.#lastUpdate + this.#settings.getRefreshInterval() > Date.now() / 1000){
+            this.refreshConfig()
+        }
         if (this.fetchedConfig.has(key)) {
             return ((this.fetchedConfig.get(key) as KeyValuePair)['v'])
         } else {
@@ -58,15 +60,5 @@ export default class ConfigDN {
 
     changeRefreshInterval(newInterval : number){
         this.#settings.changeRefreshInterval(newInterval);
-        this.#setupRefresh();
-    }
-
-    #setupRefresh() {
-        if (this.#refresh !== -1){
-            clearInterval(this.#refresh);
-        }
-        this.#refresh = setInterval(() => {
-            this.refreshConfig();
-        }, this.#settings.getRefreshInterval());
     }
 }
