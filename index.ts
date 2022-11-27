@@ -37,7 +37,7 @@ export default class ConfigDN {
             const data: Object = responseMap.get('d') as Object;
             this.fetchedConfig = new Map(Object.entries(data));
         }).catch((err) => {
-            console.error(err);
+            throw new Error(err);
         })
     }
 
