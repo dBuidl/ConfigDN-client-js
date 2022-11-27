@@ -1,11 +1,17 @@
-export class Config {
+export class Settings {
   #endpoint: string = 'https://cdn.configdn.com/';
   #refreshInterval: number = 60;
   #authKey : string = '';
 
+  /**
+   * Creates a new instance of settings
+   * @param authKey Authirization Key, found on site
+   * @param endpoint Endpoint, to use
+   * @param refreshInterval How often to refresh data
+   */
   constructor(authKey : string, endpoint : string, refreshInterval : number) {
     this.#setAuthKey(authKey);
-    this.changeEndpoint(endpoint);
+    this.setEndpoint(endpoint);
     this.changeRefreshInterval(refreshInterval)
   }
 
@@ -22,12 +28,12 @@ export class Config {
    * @param newEndpoint new endpoint to set to, must start with http/https
    * @throws Error
    */
-  changeEndpoint(newEndpoint: string) {
+  setEndpoint(newEndpoint: string) {
     const regexExp = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
     const regex = new RegExp(regexExp);
 
     if (!newEndpoint.match(regex)) {
-      throw new Error('Invalid URL');
+      // throw new Error('Invalid URL');
     }
     if (!newEndpoint.endsWith('/')) {
       newEndpoint += '/';
