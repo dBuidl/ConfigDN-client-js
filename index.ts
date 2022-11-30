@@ -1,4 +1,5 @@
 import {Settings } from "./src/settings";
+import version from './package.json';
 import axios from 'axios';
 
 interface KeyValuePair {
@@ -31,6 +32,7 @@ export class ConfigDN {
             method: 'GET',
             url: this.#settings.getEndpoint() + 'public_api/v1/get_config/',
             headers: {
+                'User-Agent': 'ConfigDN-JS/' + version,
                 'Authorization': this.#settings.getAuthKey(),
                 'Content-Type': 'application/json'
             }
