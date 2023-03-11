@@ -62,7 +62,7 @@ export class ConfigDN {
         if (this.fetchedConfig.size === 0 || this.#lastUpdate + this.#settings.getRefreshInterval() > Date.now() / 1000) {
             await this.refreshConfig()
         }
-        return this.getLocal(key);
+        return this.getLocal(key, defaultValue);
     }
 
     /**
