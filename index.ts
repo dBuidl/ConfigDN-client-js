@@ -55,9 +55,10 @@ export class ConfigDN {
     /**
      * Gets the value for a key, if local congif is blank, will attempt to retrieve it first, if it's time to refresh, it will wait for refresh first
      * @param key Key to get value for
+     * @param defaultValue Default value to return, cannot be null
      * @returns Value
      */
-    async get(key: string): Promise<any> {
+    async get(key: string, defaultValue : any = null): Promise<any> {
         if (this.fetchedConfig.size === 0 || this.#lastUpdate + this.#settings.getRefreshInterval() > Date.now() / 1000) {
             await this.refreshConfig()
         }
@@ -67,16 +68,21 @@ export class ConfigDN {
     /**
      * Gets value for a key, will refresh in the background for new config it it's time
      * @param key Key to get value for
+     * @param defaultValue Default value to return, cannot be null
      * @returns Value
      */
-    getLocal(key : string) : any {
+    getLocal(key : string, defaultValue : any = null) : any {
         if (this.#lastUpdate + this.#settings.getRefreshInterval() > Date.now() / 1000){
             this.refreshConfig()
         }
         if (this.fetchedConfig.has(key)) {
             return ((this.fetchedConfig.get(key) as KeyValuePair)['v'])
         } else {
-            throw new Error('Key not in config');
+            if (defaultValue !== null){
+                return defaultValue
+            } else {
+                throw new Error('Key not in config');
+            }
         }
     }
 
