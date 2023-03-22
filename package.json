@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepublish": "tsc"
+    "build": "tsc && tsc -p tsconfig.browser.json",
+    "browser" : "tsc -p tsconfig.browser.json"
   },
   "repository": {
     "type": "git",
