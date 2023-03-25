@@ -1,17 +1,17 @@
 {
   "name": "@configdn/configdn-js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "ConfigDN JS Client",
-  "main": "dist.browser/index.js",
-  "types": "dist.browser/index.d.ts",
+  "main": "dist.browser/src/index.js",
+  "types": "dist.browser/src/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "browser" : "tsc -p tsconfig.browser.json",
     "prepublish": "npm run build && npm run browser"
   },
   "browser": {
-    "./dist/src/index.js": "./dist.browser/index.js",
-    "./dist/src/index.d.ts": "./dist.browser/index.d.ts"
+    "./dist/src/index.js": "./dist.browser/src/index.js",
+    "./dist/src/index.d.ts": "./dist.browser/src/index.d.ts"
   },
 
   "repository": {
