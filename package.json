@@ -1,12 +1,19 @@
 {
   "name": "@configdn/configdn-js",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "ConfigDN JS Client",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
-    "prepublish": "tsc"
+    "prepublish": "build && browser",
+    "build": "tsc -p tsconfig.json",
+    "browser" : "tsc -p tsconfig.browser.json"
   },
+  "browser": {
+    "./dist/src/index.js": "./dist.browser/index.js",
+    "./dist/src/index.d.ts": "./dist.browser/index.d.ts"
+  },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dBuidl/ConfigDN-client-js.git"

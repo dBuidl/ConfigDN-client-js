@@ -1,5 +1,5 @@
-import {Settings } from "./src/settings";
-import version from './package.json';
+import { Settings } from './settings';
+import version from '../package.json';
 import axios from 'axios';
 
 interface KeyValuePair {
@@ -7,8 +7,8 @@ interface KeyValuePair {
 }
 
 export class ConfigDN {
-    #settings: Settings;
-    #lastUpdate : number;
+    settings: Settings;
+    lastUpdate : number;
     fetchedConfig: Map<String, Object> = new Map();
     
     /**
@@ -18,9 +18,9 @@ export class ConfigDN {
      * @param refreshInterval How often to refresh config in seconds, defaults to 60 seconds
      */
     constructor(authKey: string, apiEndpoint: string = 'https://cdn.configdn.com/', refreshInterval: number = 60) {
-        this.#settings = new Settings(authKey, apiEndpoint, refreshInterval);
+        this.settings = new Settings(authKey, apiEndpoint, refreshInterval);
         this.refreshConfig(true);
-        this.#lastUpdate = Date.now() / 1000;
+        this.lastUpdate = Date.now() / 1000;
     }
 
     /**
@@ -30,10 +30,10 @@ export class ConfigDN {
     async refreshConfig(errorOnFail: boolean = false): Promise<void> {
         await axios.request({
             method: 'GET',
-            url: this.#settings.getEndpoint() + 'public_api/v1/get_config/',
+            url: this.settings.getEndpoint() + 'public_api/v1/get_config/',
             headers: {
                 'User-Agent': 'ConfigDN-JS/' + version,
-                'Authorization': this.#settings.getAuthKey(),
+                'Authorization': this.settings.getAuthKey(),
                 'Content-Type': 'application/json'
             }
         }).then((response) => {
@@ -59,7 +59,7 @@ export class ConfigDN {
      * @returns Value
      */
     async get(key: string, defaultValue : any = null): Promise<any> {
-        if (this.fetchedConfig.size === 0 || this.#lastUpdate + this.#settings.getRefreshInterval() > Date.now() / 1000) {
+        if (this.fetchedConfig.size === 0 || this.lastUpdate + this.settings.getRefreshInterval() > Date.now() / 1000) {
             await this.refreshConfig()
         }
         return this.getLocal(key, defaultValue);
@@ -72,7 +72,7 @@ export class ConfigDN {
      * @returns Value
      */
     getLocal(key : string, defaultValue : any = null) : any {
-        if (this.#lastUpdate + this.#settings.getRefreshInterval() > Date.now() / 1000){
+        if (this.lastUpdate + this.settings.getRefreshInterval() > Date.now() / 1000){
             this.refreshConfig()
         }
         if (this.fetchedConfig.has(key)) {
@@ -91,6 +91,6 @@ export class ConfigDN {
      * @param newInterval new interval
      */
     changeRefreshInterval(newInterval : number){
-        this.#settings.changeRefreshInterval(newInterval);
+        this.settings.changeRefreshInterval(newInterval);
     }
 }
