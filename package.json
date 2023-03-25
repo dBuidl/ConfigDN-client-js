@@ -1,9 +1,9 @@
 {
   "name": "@configdn/configdn-js",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "ConfigDN JS Client",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "main": "dist.browser/index.js",
+  "types": "dist.browser/index.d.ts",
   "scripts": {
     "prepublish": "build && browser",
     "build": "tsc -p tsconfig.json",
