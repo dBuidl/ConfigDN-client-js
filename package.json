@@ -2,11 +2,11 @@
   "name": "@configdn/configdn-js",
   "version": "0.1.4",
   "description": "ConfigDN JS Client",
-  "main": "dist.browser/src/index.js",
+  "main": "dist.browser/src/bundle.js",
   "types": "dist.browser/src/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "browser" : "tsc -p tsconfig.browser.json",
+    "browser": "npx webpack --config webpack.config.browser.js",
     "prepublish": "npm run build && npm run browser"
   },
   "browser": {
@@ -28,6 +28,9 @@
     "axios": "^1.4.0"
   },
   "devDependencies": {
-    "typescript": "^5.1.6"
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4"
   }
 }
