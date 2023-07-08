@@ -1,6 +1,6 @@
 {
   "name": "@configdn/configdn-js",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "ConfigDN JS Client",
   "main": "dist/configdn-js.js",
   "module": "dist/configdn-js.esm.js",
