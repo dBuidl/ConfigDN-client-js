@@ -1,6 +1,5 @@
 import { Settings } from './settings';
 import version from '../package.json';
-import axios from 'axios';
 
 interface KeyValuePair {
     v: any
@@ -28,16 +27,15 @@ export class ConfigDN {
      * @param errorOnFail Throws an error if it fails
      */
     async refreshConfig(errorOnFail: boolean = false): Promise<void> {
-        await axios.request({
+        await fetch(this.settings.getEndpoint() + 'public_api/v1/get_config/', {
             method: 'GET',
-            url: this.settings.getEndpoint() + 'public_api/v1/get_config/',
             headers: {
-                'ConfigDN-Client-Version': 'ConfigDN-JS/' + version,
+                'User-Agent': 'ConfigDN-JS/' + version,
                 'Authorization': this.settings.getAuthKey(),
                 'Content-Type': 'application/json'
             }
         }).then((response) => {
-            const responseMap = new Map(Object.entries(response.data));
+            const responseMap = new Map(Object.entries(response.json()));
             if (!responseMap.get('s')) {
                 if (errorOnFail) {
                     throw new Error('Could not download config, problem: ' + responseMap.get('e'));
@@ -53,7 +51,7 @@ export class ConfigDN {
     }
 
     /**
-     * Gets the value for a key, if local congif is blank, will attempt to retrieve it first, if it's time to refresh, it will wait for refresh first
+     * Gets the value for a key, if local config is blank, will attempt to retrieve it first, if it's time to refresh, it will wait for refresh first
      * @param key Key to get value for
      * @param defaultValue Default value to return, cannot be null
      * @returns Value

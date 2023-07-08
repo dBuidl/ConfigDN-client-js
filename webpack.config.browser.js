@@ -13,7 +13,7 @@ module.exports = {
         filename: "bundle.js" // <--- Will be compiled to this single file
     },
     resolve: {
-        extensions: [".ts", ".tsx", ".js"],
+        extensions: [".ts", ".tsx", ".js", ".json"],
     },
     module: {
         rules: [

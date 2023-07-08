@@ -2,16 +2,18 @@
   "name": "@configdn/configdn-js",
   "version": "0.1.4",
   "description": "ConfigDN JS Client",
-  "main": "dist.browser/src/bundle.js",
-  "types": "dist.browser/src/index.d.ts",
-  "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "browser": "npx webpack --config webpack.config.browser.js",
-    "prepublish": "npm run build && npm run browser"
-  },
+  "main": "dist/configdn-js.js",
+  "module": "dist/configdn-js.esm.js",
+  "typings": "dist/configdn-js.d.ts",
   "browser": {
-    "./dist/src/index.js": "./dist.browser/src/index.js",
-    "./dist/src/index.d.ts": "./dist.browser/src/index.d.ts"
+      "./dist/configdn-js.js": "./dist/configdn-js.js",
+      "./dist/configdn-js.esm.js": "./dist/configdn-js.esm.js"
+  },
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "build": "npm run build:clear && rollup -c --bundleConfigAsCjs",
+    "build:watch": "tsc -w",
+    "build:clear": "rimraf dist && rimraf tsconfig.tsbuildinfo"
   },
   "repository": {
     "type": "git",
@@ -28,9 +30,12 @@
     "axios": "^1.4.0"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "rimraf": "^5.0.1",
+    "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-esbuild": "^4.9.1",
+    "@rollup/plugin-json": "^6.0.0",
     "ts-loader": "^9.4.4",
-    "typescript": "^5.1.6",
-    "webpack": "^5.88.1",
-    "webpack-cli": "^5.1.4"
+    "typescript": "^4.1.0"
   }
 }
