@@ -1,5 +1,6 @@
 import { Settings } from './settings';
 import version from '../package.json';
+import axios from 'axios';
 
 interface KeyValuePair {
     v: any
@@ -7,9 +8,9 @@ interface KeyValuePair {
 
 export class ConfigDN {
     settings: Settings;
-    lastUpdate : number;
+    lastUpdate: number;
     fetchedConfig: Map<String, Object> = new Map();
-    
+
     /**
      * Creates a new instance
      * @param authKey Authorization key, required
@@ -27,15 +28,16 @@ export class ConfigDN {
      * @param errorOnFail Throws an error if it fails
      */
     async refreshConfig(errorOnFail: boolean = false): Promise<void> {
-        await fetch(this.settings.getEndpoint() + 'public_api/v1/get_config/', {
+        await axios.request({
             method: 'GET',
+            url: this.settings.getEndpoint() + 'public_api/v1/get_config/',
             headers: {
-                'User-Agent': 'ConfigDN-JS/' + version,
+                'ConfigDN-Client-Version': 'ConfigDN-JS/' + version,
                 'Authorization': this.settings.getAuthKey(),
                 'Content-Type': 'application/json'
             }
         }).then((response) => {
-            const responseMap = new Map(Object.entries(response.json()));
+            const responseMap = new Map(Object.entries(response.data));
             if (!responseMap.get('s')) {
                 if (errorOnFail) {
                     throw new Error('Could not download config, problem: ' + responseMap.get('e'));
@@ -56,7 +58,7 @@ export class ConfigDN {
      * @param defaultValue Default value to return, cannot be null
      * @returns Value
      */
-    async get(key: string, defaultValue : any = null): Promise<any> {
+    async get(key: string, defaultValue: any = null): Promise<any> {
         if (this.fetchedConfig.size === 0 || this.lastUpdate + this.settings.getRefreshInterval() > Date.now() / 1000) {
             await this.refreshConfig()
         }
@@ -69,14 +71,14 @@ export class ConfigDN {
      * @param defaultValue Default value to return, cannot be null
      * @returns Value
      */
-    getLocal(key : string, defaultValue : any = null) : any {
-        if (this.lastUpdate + this.settings.getRefreshInterval() > Date.now() / 1000){
+    getLocal(key: string, defaultValue: any = null): any {
+        if (this.lastUpdate + this.settings.getRefreshInterval() > Date.now() / 1000) {
             this.refreshConfig()
         }
         if (this.fetchedConfig.has(key)) {
             return ((this.fetchedConfig.get(key) as KeyValuePair)['v'])
         } else {
-            if (defaultValue !== null){
+            if (defaultValue !== null) {
                 return defaultValue
             } else {
                 throw new Error('Key not in config');
@@ -88,7 +90,7 @@ export class ConfigDN {
      * Changes refresh interval
      * @param newInterval new interval
      */
-    changeRefreshInterval(newInterval : number){
+    changeRefreshInterval(newInterval: number) {
         this.settings.changeRefreshInterval(newInterval);
     }
 }
