@@ -32,7 +32,7 @@ export class ConfigDN {
             method: 'GET',
             url: this.settings.getEndpoint() + 'public_api/v1/get_config/',
             headers: {
-                'User-Agent': 'ConfigDN-JS/' + version,
+                'X-ConfigDN-Version': 'ConfigDN-JS/' + version,
                 'Authorization': this.settings.getAuthKey(),
                 'Content-Type': 'application/json'
             }
@@ -49,7 +49,7 @@ export class ConfigDN {
             this.fetchedConfig = new Map(Object.entries(data));
         }).catch((err) => {
             throw new Error(err);
-        })
+        });
     }
 
     /**
