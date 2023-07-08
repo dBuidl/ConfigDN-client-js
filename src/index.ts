@@ -32,7 +32,7 @@ export class ConfigDN {
             method: 'GET',
             url: this.settings.getEndpoint() + 'public_api/v1/get_config/',
             headers: {
-                'ConfigDN-Client-Version': 'ConfigDN-JS/' + version,
+                'User-Agent': 'ConfigDN-JS/' + version,
                 'Authorization': this.settings.getAuthKey(),
                 'Content-Type': 'application/json'
             }
