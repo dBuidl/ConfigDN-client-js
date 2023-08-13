@@ -54,7 +54,7 @@ export class ConfigDN {
       axios(this.settings.getEndpoint() + "public_api/v1/get_config/", {
         method: "GET",
         headers: {
-          "User-Agent": "ConfigDN-JS/" + version,
+          "ConfigDN-Client-Version": "ConfigDN-JS/" + version,
           // eslint-disable-next-line @typescript-eslint/naming-convention
           "Authorization": this.settings.getAuthKey(),
           "Content-Type": "application/json"
