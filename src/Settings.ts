@@ -1,25 +1,25 @@
 export class Settings {
-  endpoint: string = 'https://cdn.configdn.com/';
-  refreshInterval: number = 60;
-  authKey : string = '';
+  endpoint = "https://cdn.configdn.com/";
+  refreshInterval = 60;
+  authKey = "";
 
   /**
    * Creates a new instance of settings
-   * @param authKey Authirization Key, found on site
+   * @param authKey Authorization Key, found on site
    * @param endpoint Endpoint, to use
    * @param refreshInterval How often to refresh data
    */
-  constructor(authKey : string, endpoint : string, refreshInterval : number) {
+  constructor(authKey: string, endpoint: string, refreshInterval: number) {
     this.setAuthKey(authKey);
     this.setEndpoint(endpoint);
-    this.changeRefreshInterval(refreshInterval)
+    this.changeRefreshInterval(refreshInterval);
   }
 
   /**
-   * Sets authorizaiton key
+   * Sets authorization key
    * @param authKey Auth Key
    */
-  setAuthKey(authKey : string){
+  setAuthKey(authKey: string) {
     this.authKey = authKey;
   }
 
@@ -29,14 +29,14 @@ export class Settings {
    * @throws Error
    */
   setEndpoint(newEndpoint: string) {
-    const regexExp = /[-a-zA-Z0-9@:%._\+~=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~?&//=]*)?/gi;
+    const regexExp = /[-a-zA-Z0-9@:%._+~=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~?&/=]*)?/gi;
     const regex = new RegExp(regexExp);
 
     if (!newEndpoint.match(regex)) {
       // throw new Error('Invalid URL');
     }
-    if (!newEndpoint.endsWith('/')) {
-      newEndpoint += '/';
+    if (!newEndpoint.endsWith("/")) {
+      newEndpoint += "/";
     }
     this.endpoint = newEndpoint;
   }
@@ -48,7 +48,7 @@ export class Settings {
    */
   changeRefreshInterval(newInterval: number) {
     if (Math.sign(newInterval) !== 1) {
-      throw new Error('New interval must be a positive integer');
+      throw new Error("New interval must be a positive integer");
     }
     this.refreshInterval = newInterval;
   }
@@ -71,6 +71,6 @@ export class Settings {
    * Gets auth key
    */
   getAuthKey(): string {
-    return  this.authKey;
+    return this.authKey;
   }
 }

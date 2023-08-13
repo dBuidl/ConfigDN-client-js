@@ -1,0 +1,14 @@
+.*
+.vscode/
+node_modules/
+src/
+gulpfile.js
+package-lock.json
+tsconfig*.json
+*.tgz
+.idea/
+.nyc_output/
+*.log
+webpack.config*.js
+.github/
+gulpfile.js
