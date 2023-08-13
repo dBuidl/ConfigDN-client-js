@@ -1,6 +1,6 @@
 {
   "name": "configdn-js",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "ConfigDN lets you change configuration settings without deploying new code.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

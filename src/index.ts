@@ -13,6 +13,8 @@ export class ConfigDN {
   private refreshHandle: Promise<void> | null = null;
   private refreshAbortController: AbortController | null = null;
   private TimerID: NodeJS.Timeout | null = null;
+  private firstRefresh: Promise<void>|null = null;
+  private hasDoneRefresh = false;
 
   /**
      * Creates a new instance
@@ -22,7 +24,7 @@ export class ConfigDN {
      */
   constructor(authKey: string, apiEndpoint = "https://cdn.configdn.com/", refreshInterval = 60) {
     this.settings = new Settings(authKey, apiEndpoint, refreshInterval);
-    this.refreshConfig(true);
+    this.firstRefresh = this.refreshConfig(true).then(v => {this.hasDoneRefresh = true; return v;});
     this.lastUpdate = Date.now() / 1000;
 
     this.TimerID = setInterval(() => {
@@ -91,6 +93,10 @@ export class ConfigDN {
      * @returns Value
      */
   async get(key: string, defaultValue: any = null): Promise<any> {
+    if (!this.hasDoneRefresh) {
+      await this.firstRefresh;
+    }
+
     if (this.fetchedConfig.has(key)) {
       return ((this.fetchedConfig.get(key) as KeyValuePair)["v"]);
     }
