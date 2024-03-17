@@ -53,7 +53,7 @@ export class ConfigDN {
     this.refreshHandle = new Promise<void>((resolve, reject) => {
       this.refreshAbortController = new AbortController();
 
-      axios(this.settings.getEndpoint() + "public_api/v1/get_config/", {
+      axios(this.settings.getEndpoint() + "api/custom/v1/get_config/", {
         method: "GET",
         headers: {
           "ConfigDN-Client-Version": "ConfigDN-JS/" + version,

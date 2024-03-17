@@ -1,6 +1,6 @@
 {
   "name": "configdn-js",
-  "version": "0.3.2",
+  "version": "0.3.4",
   "description": "ConfigDN lets you change configuration settings without deploying new code.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -34,7 +34,7 @@
   "license": "MIT",
   "homepage": "https://configdn.com",
   "dependencies": {
-    "axios": "^1.4.0",
+    "axios": "^1.6.8",
     "tslib": "^2.6.1"
   },
   "devDependencies": {
